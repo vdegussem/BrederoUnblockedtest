@@ -25,7 +25,6 @@
             letter-spacing: -1px;
         }
 
-        /* De lange, ronde zoekbalk */
         .url-input {
             width: 650px; 
             max-width: 90%; 
@@ -82,7 +81,7 @@
     <div class="container">
         <h1>BrederoUnblocked</h1>
         
-        <input type="text" id="siteUrl" class="url-input" placeholder="Zoek op Google of typ een URL..." autofocus>
+        <input type="text" id="siteUrl" class="url-input" placeholder="Typ een URL of zoekopdracht..." autofocus>
         
         <div class="btn-group">
             <button class="go-btn" onclick="loadSite()">Proxy Zoeken</button>
@@ -90,7 +89,7 @@
 
         <div class="status-msg">
             Tip: Werkt het niet? Bezoek eerst 
-            <a href="https://webtopper-1.onrender.com/" target="_blank">deze link</a> 
+            <a href="https://onrender.com" target="_blank">deze link</a> 
             om de server te wekken.
         </div>
     </div>
@@ -98,37 +97,28 @@
     <script>
         function loadSite() {
             let input = document.getElementById('siteUrl').value.trim();
-            // Gebruik jouw werkende proxy URL
-            let proxyUrl = "https://webtopper-1.onrender.com/"; 
+            let proxyUrl = "https://onrender.com"; 
 
             if (input) {
                 let targetUrl = "";
-
-                // Check of het een URL is (bevat een punt en geen spatie)
                 const isUrl = input.includes('.') && !input.includes(' ');
 
                 if (isUrl) {
-                    // Het is een URL: voeg https:// toe indien nodig
                     targetUrl = input.startsWith('http') ? input : 'https://' + input;
                 } else {
-                    // Het is een zoekopdracht: gebruik Google Search link
-                    targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+                    // Gebruik Brave Search (minder robots/CAPTCHA's)
+                    let query = input.split(' ').join('+');
+                    targetUrl = 'https://brave.com' + query;
                 }
                 
-                // Combineer proxy + target
-                let finalUrl = proxyUrl + targetUrl;
-
-                console.log("Navigeren naar: " + finalUrl);
-                window.location.href = finalUrl;
+                window.location.href = proxyUrl + targetUrl;
             } else {
-                alert("Typ eerst iets in de zoekbalk!");
+                alert("Typ eerst iets in!");
             }
         }
 
-        document.getElementById('siteUrl').addEventListener("keypress", function(e) {
-            if (e.key === "Enter") {
-                loadSite();
-            }
+        document.getElementById('siteUrl').addEventListener("keypress", (e) => {
+            if (e.key === "Enter") loadSite();
         });
     </script>
 
