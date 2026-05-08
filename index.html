@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrederoUnblocked - Proxy Search</title>
+    <title>WebTopper - Proxy Search</title>
     <style>
         body { 
             margin: 0; padding: 0; 
@@ -25,6 +25,7 @@
             letter-spacing: -1px;
         }
 
+        /* De lange, ronde zoekbalk */
         .url-input {
             width: 650px; 
             max-width: 90%; 
@@ -65,6 +66,31 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 209, 255, 0.3);
         }
+
+        /* Nieuwe sectie voor plaatjes */
+        .quick-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .quick-links a {
+            transition: transform 0.2s;
+        }
+
+        .quick-links a:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-links img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
         
         .status-msg { 
             font-size: 13px; 
@@ -79,25 +105,42 @@
 <body>
 
     <div class="container">
-        <h1>BrederoUnblocked</h1>
+        <h1>WebTopper</h1>
         
-        <input type="text" id="siteUrl" class="url-input" placeholder="Typ een URL of zoekopdracht..." autofocus>
+        <input type="text" id="siteUrl" class="url-input" placeholder="Zoek op Google of typ een URL..." autofocus>
         
         <div class="btn-group">
             <button class="go-btn" onclick="loadSite()">Proxy Zoeken</button>
         </div>
 
+        <!-- Sectie met plaatjes onder de knop -->
+        <div class="quick-links">
+            <!-- Voorbeeld: YouTube -->
+            <a href="javascript:void(0)" onclick="quickLoad('https://youtube.com')">
+                <img src="https://youtube.com/s/desktop/28236166/img/favicon_48x48.png" alt="YouTube">
+            </a>
+            <!-- Voorbeeld: Wikipedia -->
+            <a href="javascript:void(0)" onclick="quickLoad('https://wikipedia.org')">
+                <img src="https://wikipedia.org" alt="Wikipedia">
+            </a>
+            <!-- Voorbeeld: Discord -->
+            <a href="javascript:void(0)" onclick="quickLoad('https://discord.com')">
+                <img src="https://website-files.com" alt="Discord">
+            </a>
+        </div>
+
         <div class="status-msg">
             Tip: Werkt het niet? Bezoek eerst 
-            <a href="https://onrender.com" target="_blank">deze link</a> 
+            <a href="https://webtopper-1.onrender.com/" target="_blank">deze link</a> 
             om de server te wekken.
         </div>
     </div>
 
     <script>
+        // Functie voor de handmatige invoer
         function loadSite() {
             let input = document.getElementById('siteUrl').value.trim();
-            let proxyUrl = "https://onrender.com"; 
+            let proxyUrl = "https://webtopper-1.onrender.com/"; 
 
             if (input) {
                 let targetUrl = "";
@@ -106,19 +149,26 @@
                 if (isUrl) {
                     targetUrl = input.startsWith('http') ? input : 'https://' + input;
                 } else {
-                    // Gebruik Brave Search (minder robots/CAPTCHA's)
-                    let query = input.split(' ').join('+');
-                    targetUrl = 'https://brave.com' + query;
+                    targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
                 }
                 
-                window.location.href = proxyUrl + targetUrl;
+                let finalUrl = proxyUrl + targetUrl;
+                window.location.href = finalUrl;
             } else {
-                alert("Typ eerst iets in!");
+                alert("Typ eerst iets in de zoekbalk!");
             }
         }
 
-        document.getElementById('siteUrl').addEventListener("keypress", (e) => {
-            if (e.key === "Enter") loadSite();
+        // Functie voor de klikbare plaatjes
+        function quickLoad(url) {
+            let proxyUrl = "https://webtopper-1.onrender.com/"; 
+            window.location.href = proxyUrl + url;
+        }
+
+        document.getElementById('siteUrl').addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                loadSite();
+            }
         });
     </script>
 
