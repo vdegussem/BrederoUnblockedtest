@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebTopper - No Frame</title>
+    <style>
+        body { 
+            margin: 0; padding: 0; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100vh; background: #1a1a1a; color: white; font-family: sans-serif; 
+        }
+        
+        .container { text-align: center; background: #333; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { color: #00d1ff; margin-bottom: 10px; }
+        p { color: #ccc; margin-bottom: 25px; }
+        
+        .url-input {
+            width: 350px; padding: 15px; border-radius: 25px; border: 2px solid #444; 
+            background: #222; color: white; font-size: 16px; outline: none; transition: 0.3s;
+        }
+
+        .url-input:focus { border-color: #00d1ff; background: #2a2a2a; }
+
+        .btn-group { margin-top: 25px; }
+        
+        .go-btn {
+            padding: 15px 40px; background: #00d1ff; color: black; 
+            border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .go-btn:hover { background: #00b8e6; transform: scale(1.05); }
+        
+        .status-msg { font-size: 12px; color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>WebTopper</h1>
+        <p>Voer een URL in om deze via jouw proxy te openen</p>
+        <input type="text" id="siteUrl" class="url-input" placeholder="bijv. youtube.com" autofocus>
+        
+        <div class="btn-group">
+            <button class="go-btn" onclick="loadSite()">Open via Proxy</button>
+        </div>
+        <div class="status-msg">Tip: Werkt het niet? Bezoek eerst <a href="https://webtopper-1.onrender.com/" target="_blank" style="color:#00d1ff;">deze link</a> om de server te wekken.</div>
+    </div>
+
+    <script>
+        function loadSite() {
+            let input = document.getElementById('siteUrl').value.trim();
+            
+            // JOUW CORRECTE PROXY URL MET SLASH
+            let proxyUrl = "https://webtopper-1.onrender.com/"; 
+
+            if (input) {
+                let targetUrl = input;
+
+                // 1. Automatisch https:// toevoegen als het ontbreekt
+                if (!targetUrl.startsWith('http')) {
+                    targetUrl = 'https://' + targetUrl;
+                }
+                
+                // 2. Combineer proxy + target (nu mét de slash ertussen)
+                let finalUrl = proxyUrl + targetUrl;
+
+                console.log("Navigeren naar: " + finalUrl);
+
+                // 3. Open de geproxiede site in het huidige tabblad
+                window.location.href = finalUrl;
+            } else {
+                alert("Typ eerst een URL in!");
+            }
+        }
+
+        // Enter-toets ondersteuning
+        document.getElementById('siteUrl').addEventListener("keypress", function(e) {
+            if (e.key === "Enter") loadSite();
+        });
+    </script>
+
+</body>
+</html>
