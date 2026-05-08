@@ -1,100 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>BrederoUnblocked - No Frame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTopper - Proxy Search</title>
     <style>
         body { 
             margin: 0; padding: 0; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; background: #1a1a1a; color: white; font-family: sans-serif; 
+            height: 100vh; background: #1a1a1a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
         }
         
-        .container { text-align: center; background: #333; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { color: #00d1ff; margin-bottom: 10px; }
-        p { color: #ccc; margin-bottom: 25px; }
-        
+        .container { 
+            text-align: center; 
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 { 
+            color: #00d1ff; 
+            font-size: 48px;
+            margin-bottom: 20px; 
+            letter-spacing: -1px;
+        }
+
+        /* De lange, ronde zoekbalk */
         .url-input {
-            width: 350px; padding: 15px; border-radius: 25px; border: 2px solid #444; 
-            background: #222; color: white; font-size: 16px; outline: none; transition: 0.3s;
+            width: 650px; 
+            max-width: 90%; 
+            padding: 18px 30px; 
+            border-radius: 50px; 
+            border: 1px solid #444; 
+            background: #222; 
+            color: white; 
+            font-size: 18px; 
+            outline: none; 
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .url-input:focus { border-color: #00d1ff; background: #2a2a2a; }
+        .url-input:focus { 
+            border-color: #00d1ff; 
+            background: #2a2a2a; 
+            box-shadow: 0 0 20px rgba(0, 209, 255, 0.25);
+        }
 
-        .btn-group { margin-top: 25px; }
+        .btn-group { margin-top: 30px; }
         
         .go-btn {
-            padding: 15px 40px; background: #00d1ff; color: black; 
-            border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px;
+            padding: 14px 45px; 
+            background: #00d1ff; 
+            color: black; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px;
             transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 209, 255, 0.2);
         }
 
-        .go-btn:hover { background: #00b8e6; transform: scale(1.05); }
+        .go-btn:hover { 
+            background: #00b8e6; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 209, 255, 0.3);
+        }
         
-        .status-msg { font-size: 12px; color: #666; margin-top: 20px; }
+        .status-msg { 
+            font-size: 13px; 
+            color: #777; 
+            margin-top: 40px; 
+        }
+
+        a { color: #00d1ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>BrederoUnblocked</h1>
-        <p>Voer een URL in om deze via jouw proxy te openen</p>
-        <input type="text" id="siteUrl" class="url-input" placeholder="bijv. youtube.com" autofocus>
+        <h1>WebTopper</h1>
+        
+        <input type="text" id="siteUrl" class="url-input" placeholder="Zoek op Google of typ een URL..." autofocus>
         
         <div class="btn-group">
-            <button class="go-btn" onclick="loadSite()">Open via Proxy</button>
+            <button class="go-btn" onclick="loadSite()">Proxy Zoeken</button>
         </div>
-        <div class="status-msg">Tip: Werkt het niet? Bezoek eerst <a href="https://onrender.com" target="_blank" style="color:#00d1ff;">deze link</a> om de server te wekken.</div>
+
+        <div class="status-msg">
+            Tip: Werkt het niet? Bezoek eerst 
+            <a href="https://webtopper-1.onrender.com/" target="_blank">deze link</a> 
+            om de server te wekken.
+        </div>
     </div>
 
     <script>
         function loadSite() {
             let input = document.getElementById('siteUrl').value.trim();
-            
-            // JOUW PROXY URL
-            let proxyUrl = "https://onrender.com"; 
+            // Gebruik jouw werkende proxy URL
+            let proxyUrl = "https://webtopper-1.onrender.com/"; 
 
             if (input) {
-                let targetUrl = input;
+                let targetUrl = "";
 
-                if (!targetUrl.startsWith('http')) {
-                    targetUrl = 'https://' + targetUrl;
+                // Check of het een URL is (bevat een punt en geen spatie)
+                const isUrl = input.includes('.') && !input.includes(' ');
+
+                if (isUrl) {
+                    // Het is een URL: voeg https:// toe indien nodig
+                    targetUrl = input.startsWith('http') ? input : 'https://' + input;
+                } else {
+                    // Het is een zoekopdracht: gebruik Google Search link
+                    targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
                 }
                 
-                // Combineert proxy link met de website link
+                // Combineer proxy + target
                 let finalUrl = proxyUrl + targetUrl;
 
-                // Open in about:blank cloaking
-                let newWin = window.open('about:blank', '_blank');
-
-                if (!newWin) {
-                    alert("Pop-up geblokkeerd! Klik rechtsboven in de adresbalk op 'Toestaan'.");
-                    return;
-                }
-
-                newWin.document.write(`
-                    <html>
-                    <head>
-                        <title>BrederoUnblocked</title>
-                        <link rel="icon" type="image/x-icon" href="https://google.com">
-                        <style>
-                            body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
-                            iframe { width: 100%; height: 100%; border: none; }
-                        </style>
-                    </head>
-                    <body>
-                        <iframe src="${finalUrl}"></iframe>
-                    </body>
-                    </html>
-                `);
-                newWin.document.close();
+                console.log("Navigeren naar: " + finalUrl);
+                window.location.href = finalUrl;
             } else {
-                alert("Typ eerst een URL in!");
+                alert("Typ eerst iets in de zoekbalk!");
             }
         }
 
         document.getElementById('siteUrl').addEventListener("keypress", function(e) {
-            if (e.key === "Enter") loadSite();
+            if (e.key === "Enter") {
+                loadSite();
+            }
         });
     </script>
 
