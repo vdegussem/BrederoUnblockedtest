@@ -112,7 +112,7 @@
                     targetUrl = input.startsWith('http') ? input : 'https://' + input;
                 } else {
                     // Het is een zoekopdracht: gebruik Google Search link
-                    targetUrl = 'https://google.com' + encodeURIComponent(input);
+                    targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
                 }
                 
                 // Combineer proxy + target
