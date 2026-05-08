@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebTopper - No Frame</title>
+    <title>BrederoUnblocked - No Frame</title>
     <style>
         body { 
             margin: 0; padding: 0; 
@@ -37,7 +37,7 @@
 <body>
 
     <div class="container">
-        <h1>WebTopper</h1>
+        <h1>BrederoUnblocked</h1>
         <p>Voer een URL in om deze via jouw proxy te openen</p>
         <input type="text" id="siteUrl" class="url-input" placeholder="bijv. youtube.com" autofocus>
         
@@ -50,31 +50,46 @@
     <script>
         function loadSite() {
             let input = document.getElementById('siteUrl').value.trim();
-            
-            // JOUW CORRECTE PROXY URL MET SLASH
             let proxyUrl = "https://webtopper-1.onrender.com/"; 
 
             if (input) {
                 let targetUrl = input;
 
-                // 1. Automatisch https:// toevoegen als het ontbreekt
                 if (!targetUrl.startsWith('http')) {
                     targetUrl = 'https://' + targetUrl;
                 }
                 
-                // 2. Combineer proxy + target (nu mét de slash ertussen)
                 let finalUrl = proxyUrl + targetUrl;
 
-                console.log("Navigeren naar: " + finalUrl);
+                // --- ABOUT:BLANK CLOAKING ---
+                let newWin = window.open('about:blank', '_blank');
 
-                // 3. Open de geproxiede site in het huidige tabblad
-                window.location.href = finalUrl;
+                if (!newWin) {
+                    alert("Pop-up geblokkeerd! Klik rechtsboven in de adresbalk op 'Toestaan'.");
+                    return;
+                }
+
+                newWin.document.write(`
+                    <html>
+                    <head>
+                        <title>BrederoUnblocked</title>
+                        <link rel="icon" type="image/x-icon" href="https://google.com">
+                        <style>
+                            body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+                            iframe { width: 100%; height: 100%; border: none; }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${finalUrl}"></iframe>
+                    </body>
+                    </html>
+                `);
+                newWin.document.close();
             } else {
                 alert("Typ eerst een URL in!");
             }
         }
 
-        // Enter-toets ondersteuning
         document.getElementById('siteUrl').addEventListener("keypress", function(e) {
             if (e.key === "Enter") loadSite();
         });
