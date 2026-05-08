@@ -2,70 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BrederoUnblocked - No Frame</title>
+    <title>BrederoUnblocked</title>
+    <link id="favicon" rel="icon" type="image/x-icon" href="https://google.com">
     <style>
         body { 
             margin: 0; padding: 0; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             height: 100vh; background: #1a1a1a; color: white; font-family: sans-serif; 
         }
-        
         .container { text-align: center; background: #333; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h1 { color: #00d1ff; margin-bottom: 10px; }
-        p { color: #ccc; margin-bottom: 25px; }
-        
         .url-input {
             width: 350px; padding: 15px; border-radius: 25px; border: 2px solid #444; 
-            background: #222; color: white; font-size: 16px; outline: none; transition: 0.3s;
+            background: #222; color: white; font-size: 16px; outline: none;
         }
-
-        .url-input:focus { border-color: #00d1ff; background: #2a2a2a; }
-
-        .btn-group { margin-top: 25px; }
-        
         .go-btn {
-            padding: 15px 40px; background: #00d1ff; color: black; 
+            margin-top: 25px; padding: 15px 40px; background: #00d1ff; color: black; 
             border: none; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 16px;
-            transition: 0.2s;
         }
-
-        .go-btn:hover { background: #00b8e6; transform: scale(1.05); }
-        
-        .status-msg { font-size: 12px; color: #666; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>BrederoUnblocked</h1>
-        <p>Voer een URL in om deze via jouw proxy te openen</p>
+        <p>Voer een URL in om invisible te surfen:</p>
         <input type="text" id="siteUrl" class="url-input" placeholder="bijv. youtube.com" autofocus>
-        
-        <div class="btn-group">
-            <button class="go-btn" onclick="loadSite()">Open via Proxy</button>
-        </div>
-        <div class="status-msg">Tip: Werkt het niet? Bezoek eerst <a href="https://webtopper-1.onrender.com/" target="_blank" style="color:#00d1ff;">deze link</a> om de server te wekken.</div>
+        <br>
+        <button class="go-btn" onclick="loadSite()">Launch Invisible</button>
     </div>
 
     <script>
         function loadSite() {
             let input = document.getElementById('siteUrl').value.trim();
-            let proxyUrl = "https://webtopper-1.onrender.com/"; 
+            // JOUW PROXY ZONDER SLASH OP HET EINDE (we voegen die later zelf toe)
+            let proxyBase = "https://webtopper-1.onrender.com"; 
 
             if (input) {
                 let targetUrl = input;
 
+                // 1. YouTube Fix: Zorg dat video's niet blokkeren
+                if (targetUrl.includes("://youtube.com")) {
+                    targetUrl = targetUrl.replace("watch?v=", "embed/");
+                } else if (targetUrl.includes("youtu.be/")) {
+                    targetUrl = targetUrl.replace("youtu.be/", "://youtube.com");
+                }
+
+                // 2. Protocol Check: Zorg dat de URL begint met https://
                 if (!targetUrl.startsWith('http')) {
                     targetUrl = 'https://' + targetUrl;
                 }
                 
-                let finalUrl = proxyUrl + targetUrl;
+                // 3. De MAGISCHE LINK OPBOUW (Dwingt de slash tussen proxy en site)
+                let finalUrl = proxyBase + "/" + targetUrl;
 
-                // --- ABOUT:BLANK CLOAKING ---
+                // 4. Open in about:blank
                 let newWin = window.open('about:blank', '_blank');
 
-                if (!newWin) {
-                    alert("Pop-up geblokkeerd! Klik rechtsboven in de adresbalk op 'Toestaan'.");
+                if (!newWin) { 
+                    alert("Pop-up geblokkeerd! Klik rechtsboven in de balk op 'Toestaan'.");
                     return;
                 }
 
@@ -85,15 +80,10 @@
                     </html>
                 `);
                 newWin.document.close();
-            } else {
-                alert("Typ eerst een URL in!");
             }
         }
 
-        document.getElementById('siteUrl').addEventListener("keypress", function(e) {
-            if (e.key === "Enter") loadSite();
-        });
+        document.getElementById('siteUrl').addEventListener("keypress", (e) => { if (e.key === "Enter") loadSite(); });
     </script>
-
 </body>
 </html>
